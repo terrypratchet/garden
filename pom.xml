@@ -98,13 +98,91 @@
 
 	</dependencies>
 
+	<profiles>
+
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<env>dev</env>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>production</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<env>prod</env>
+			</properties>
+		</profile>
+
+
+	</profiles>
+
+
 	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources/filtering</directory>
+				<filtering>true</filtering>
+			</resource>
+
+			<resource>
+				<directory>src/main/resources/env</directory>
+				<filtering>false</filtering>
+			</resource>
+
+			<resource>
+				<directory>src/main/resources/non-filtering</directory>
+				<filtering>false</filtering>
+			</resource>
+
+
+		</resources>
+
+
+		<filters>
+			<filter>src/main/resources/env/config.${env}.properties</filter>
+		</filters>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-help-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>show-profiles</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>active-profiles</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
 		</plugins>
 	</build>
+
+
+
 
 </project>
